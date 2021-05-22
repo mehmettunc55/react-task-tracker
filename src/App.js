@@ -2,6 +2,7 @@ import {useState} from 'react'
 import Header from './components/Header';
 import './App.css';
 import Tasks from './components/Tasks';
+import AddTask from './components/AddTask';
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -25,10 +26,38 @@ function App() {
     },
   ]);
 
+  
+  //Add Tasks
+  const addTask =() =>{
+    const id = Math.floor(Math.random()*100)+1;
+    const newTask = {id, ...tasks};
+    setTasks([...tasks, newTask]);
+  }
+
+
+
+  //Delete Task
+
+  const deleteTask = (deletedTaskId) => {
+    setTasks(tasks.filter((task)=>task.id !== deletedTaskId))
+  }
+
+  //Toogle Done
+
+  const toggleDone =(toogleDoneId)=> {
+    setTasks(
+      tasks.map((task) => (
+        task.id === toogleDoneId ? {...task, isDone : !task.isDone} : task
+      )
+    )
+  }
+
+
   return (
     <div className="container">
       <Header title = 'Task Tracker'/>
-      <Tasks tasks={tasks}/>
+      <AddTask addTask={addTask}/>
+      <Tasks tasks={tasks} deleteTask={deleteTask} toogleDone = {toogleDone}/>
     </div>
   );
 }
